@@ -7,6 +7,10 @@ class PostImage < ApplicationRecord
    
    validates :shop_name, presence: true
    validates :image , presence: true
+   
+    def favorited_by?(user)
+   favorites.where(user_id: user.id).exists?
+   end
   
   def get_image
     unless image.attached?
@@ -14,10 +18,6 @@ class PostImage < ApplicationRecord
       image.attach(io: File.open(file_path), filename: 'default-image.jpg', content_type: 'image/jpeg')
     end
     image
-  end
-  
-  def favorited_by?(user)
-    favorites.exists?(user_id: user.id)
   end
   
 end
